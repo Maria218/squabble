@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "3968092921",
+    "project_id": "squabble-53136",
+    "storage_bucket": "squabble-53136.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:3968092921:android:d234f4aeacd11bab7bb028",
+        "android_client_info": {
+          "package_name": "com.example.squabble"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "3968092921-rljec8f5usfektn0v26raq22ks4oe8uq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.squabble",
+            "certificate_hash": "d7e55e35d0ef54ab11f97bc43f8509dfb5668184"
+          }
+        },
+        {
+          "client_id": "3968092921-ece87fd8jh8m0om0g2tnvij4tjtv8o5o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAKURq10lHJhoUBErBQ9YFnYWQ3Q9ED2UU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "3968092921-ece87fd8jh8m0om0g2tnvij4tjtv8o5o.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
