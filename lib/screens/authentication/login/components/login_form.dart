@@ -74,41 +74,37 @@ class _LoginFormState extends State<LoginForm> {
     return BlocListener<LoginBloc, LoginState>(
       listener: (context, state) {
         if (state.isSubmitting) {
-          ScaffoldMessenger.of(context)
-            ..hideCurrentSnackBar()
-            ..showSnackBar(
-              SnackBar(
-                content: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text('Please wait...'),
-                    CircularProgressIndicator(),
-                  ],
-                ),
+          ScaffoldMessenger.of(context)..hideCurrentSnackBar()..showSnackBar(
+            SnackBar(
+              content: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('Please wait...'),
+                  CircularProgressIndicator(),
+                ],
               ),
-            );
+            ),
+          );
         }
         if (state.isSuccess) {
           BlocProvider.of<AuthenticationBloc>(context).add(AuthenticationLoggedIn());
           Navigator.of(context).popUntil((route) => route.isFirst);
         }
         if (state.isFailure) {
-          ScaffoldMessenger.of(context)
-            ..hideCurrentSnackBar()
-            ..showSnackBar(
-              SnackBar(
-                content: Expanded(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Text('Login Failure!'),
-                      Icon(Icons.error,size: 30,),
-                    ],
-                  ),
+          ScaffoldMessenger.of(context)..hideCurrentSnackBar()..showSnackBar(
+            SnackBar(
+              content: Expanded(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text('Login Failure!'),
+                    Icon(Icons.error,size: 30,),
+                  ],
                 ),
-                backgroundColor: Colors.red,
               ),
-            );
+              backgroundColor: Colors.red,
+            ),
+          );
         }
       },
       child: BlocBuilder<LoginBloc, LoginState>(
@@ -138,7 +134,7 @@ class _LoginFormState extends State<LoginForm> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Padding(
-                            padding: EdgeInsets.fromLTRB(15, 60, 15, 10),
+                            padding: EdgeInsets.fromLTRB(15, 0, 15, 10),
                             child: TextFormField(
                               controller: _emailController,
                               keyboardType: TextInputType.emailAddress,
