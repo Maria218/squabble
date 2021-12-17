@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:squabble/models/userprofile/user_profile_model.dart';
 import 'package:squabble/models/userprofile/user_profile_singleton.dart';
+import 'package:squabble/screens/contacts/bloc/contact_exports.dart';
 import 'package:squabble/screens/contacts/bloc/searchBloc/search_bloc_exports.dart';
 
 class ContactPage extends StatefulWidget {
@@ -48,6 +49,9 @@ class _ContactPageState extends State<ContactPage> {
   Widget buildMyWidget(BuildContext context) {
     return Column(
       children: [
+        SizedBox(
+          height: 20,
+        ),
         Align(
           alignment: Alignment.center,
           child: Container(
@@ -71,20 +75,18 @@ class _ContactPageState extends State<ContactPage> {
                         color: Colors.grey[800]!, style: BorderStyle.solid)),
                 hintText: 'Search Contacts',
                 hintStyle: TextStyle(color: Colors.grey[600], fontSize: 15),
-                suffixIcon: _searchHome.text.isEmpty
-                    ? Icon(
-                        Icons.search,
-                        color: Colors.grey[600],
-                      )
-                    : IconButton(
-                        icon: Icon(Icons.clear),
-                        color: Colors.white,
-                        iconSize: 20,
-                        onPressed: () {
-                          _searchHome.clear();
-                          _contactSearchBloc
-                              .add(SearchTextChanged(query: ''));
-                        }),
+                suffixIcon: _searchHome.text.isEmpty ? Icon(
+                  Icons.search,
+                  color: Colors.grey[600],
+                ) : IconButton(
+                  icon: Icon(Icons.clear),
+                  color: Colors.white,
+                  iconSize: 20,
+                  onPressed: () {
+                    _searchHome.clear();
+                    // _contactSearchBloc.add(SearchTextChanged(query: ''));
+                  }
+                ),
                 isDense: true,
                 contentPadding: EdgeInsets.all(12),
               ),
@@ -92,6 +94,9 @@ class _ContactPageState extends State<ContactPage> {
                   .add(SearchTextChanged(query: query)),
             ),
           ),
+        ),
+        SizedBox(
+          height: 20,
         ),
         Expanded(
           child: _searchContactPage(context),
@@ -157,35 +162,98 @@ class _ContactPageState extends State<ContactPage> {
               );
             }
 
-            if (state.users.isEmpty) {
-              return Text(
-                'There are no users',
-                style: TextStyle(color: Colors.white),
-              );
-            }
-
-            return Column(
-              children: [
-                Container(
-                  child: ListView.separated(
-                    itemCount: state.users.length,
-                    separatorBuilder: (context, index) => Divider(),
-                    itemBuilder: (context, index) {
-                      final result = state.users[index];
-                      return _buildContactSearchItem(context, result, index, state);
-                    },
-                  ),
-                ),
-              ]
+            return ListView.separated(
+              itemCount: state.users.length,
+              separatorBuilder: (context, index) => Divider(),
+              itemBuilder: (context, index) {
+                final result = state.users[index];
+                return _buildContactSearchItem(context, result, index, state);
+              },
             );
           }
           return Container(
-            child: Text('Here are your contacts', style: TextStyle(color: Colors.white),),
+            child: _buildContactScroll(context)
           );
         },
       )
     );
   }
+
+  Widget _buildContactScroll(BuildContext context) {
+    return BlocListener<ContactBloc, ContactState>(
+      listener: (context, state) {
+        if (state is ContactsFetchingState) {
+          print("Loading");
+        }
+
+        if (state is ContactsErrorState) {
+          print("" + state.error.toString());
+          ScaffoldMessenger.of(context)
+            ..hideCurrentSnackBar()
+            ..showSnackBar(
+              SnackBar(
+                content: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text('There was an error retrieving contacts'),
+                    Icon(Icons.error)
+                  ],
+                ),
+                backgroundColor: Colors.red,
+              ),
+            );
+        }
+      },
+      child: BlocBuilder<ContactBloc, ContactState>(
+        builder: (context, state) {
+          if (state is ContactsEmptyState) {
+            return Center(
+                child: Text(
+              'Loading...',
+              style: TextStyle(color: Colors.white),
+            ));
+          }
+
+          if (state is ContactsFetchedState) {
+            return ListView.builder(
+              // physics: ClampingScrollPhysics(),
+              itemBuilder: (context, index) => _buildverticalListItem(context, index, state),
+              itemCount: state.users.length,
+              // scrollDirection: Axis.horizontal,
+            );
+          }
+
+          return Text('Loaded contacts');
+        },
+      ),
+    );
+  }
+
+  _buildverticalListItem(BuildContext context, int index, ContactsFetchedState state) {
+    // final user = state.users[index];
+    return ListTile(
+      // leading: CircleAvatar(
+      //   backgroundImage: NetworkImage(user.photoUrl),
+      // ),
+      title: Text(
+        state.users[index].fullName!,
+        style: TextStyle(color: Colors.white),
+      ),
+      // onTap: () {
+      //   Navigator.push(
+      //     context,
+      //     MaterialPageRoute(
+      //       builder: (context) => ChatScreen(
+      //         user: user,
+      //       ),
+      //     ),
+      //   );
+      // },
+    );
+  }
+
+
+
 
   Widget _buildContactSearchItem(BuildContext context, UserProfile user, int index, state) {
     return Card(
@@ -196,7 +264,7 @@ class _ContactPageState extends State<ContactPage> {
             // MyNavigator.goToStoreFront(context, state.vendors[index], onGoBack);
           },
           title: Text(
-            user.firstName!,
+            user.fullName!,
             style: TextStyle(
               color: Colors.white,
               // fontWeight: FontWeight.bold,

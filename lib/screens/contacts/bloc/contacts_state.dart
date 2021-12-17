@@ -36,7 +36,7 @@ class ContactsErrorState extends ContactState {
   String toString() => 'ContactsErrorState { error: $error }';
 }
 
-class VerticalListEmptyState extends ContactState {
+class ContactsEmptyState extends ContactState {
   @override
   String toString() => 'Contact List initial state';
 }

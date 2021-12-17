@@ -9,7 +9,7 @@ class ContactBloc extends Bloc<ContactEvent, ContactState> {
   ContactBloc({
     required UserRepository userRepository,
   })  : _userRepository = userRepository,
-        super(VerticalListEmptyState());
+        super(ContactsEmptyState());
 
   @override
   Stream<ContactState> mapEventToState(ContactEvent event) async* {
