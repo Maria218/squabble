@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:squabble/blocs/authentication/bloc.dart';
 import 'package:squabble/repositories/repositories.dart';
 import 'package:squabble/screens/authentication/login/login_screen.dart';
+import 'package:squabble/screens/contacts/contacts_screen.dart';
 import 'package:squabble/screens/home/home_screen.dart';
 
 void main() async {
@@ -52,9 +53,7 @@ class Squabble extends StatelessWidget {
             return LoginScreen(userRepository: userRepository,);
           }
           if (state is AuthenticationSuccess) {
-            return HomeScreen(
-              userInfoDetails: state.userDetails,
-            );
+            return ContactsScreen();
           }
           return const Text(
             'Loading',

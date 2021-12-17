@@ -3,7 +3,7 @@ class UserProfile {
   String? firstName;
   String? lastName;
   String? email;
-  String? password;
+  // String? password;
   String? description;
   String? location;
   String? hobbies;
@@ -13,7 +13,7 @@ class UserProfile {
     this.firstName,
     this.lastName,
     this.email,
-    this.password,
+    // this.password,
     this.description,
     this.location,
     this.hobbies
@@ -24,7 +24,7 @@ class UserProfile {
     json["firstName"] == null ? null : json["firstName"],
     json["lastName"] == null ? null : json["lastName"],
     json["email"] == null ? null : json["email"],
-    json["password"] == null ? null : json["password"],
+    // json["password"] == null ? null : json["password"],
     json["description"] == null ? null : json["description"],
     json["location"] == null ? null : json["location"],
     json["hobbies"] == null ? null : json["hobbies"],
@@ -38,7 +38,7 @@ class UserProfile {
     'lastName': lastName,
     'location': location,
     'email': email,
-    'password': password,
+    // 'password': password,
     'description': description,
     'hobbies': hobbies,
   };

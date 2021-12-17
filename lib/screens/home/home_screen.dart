@@ -17,7 +17,7 @@ class _HomeScreenState extends State<HomeScreen> {
     UserProfileSingleton().firstName,
     UserProfileSingleton().lastName,
     UserProfileSingleton().email,
-    UserProfileSingleton().password,
+    // UserProfileSingleton().password,
     UserProfileSingleton().description,
     UserProfileSingleton().location,
     UserProfileSingleton().hobbies

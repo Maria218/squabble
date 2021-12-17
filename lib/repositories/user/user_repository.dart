@@ -13,7 +13,7 @@ class UserRepository {
     UserProfileSingleton().firstName,
     UserProfileSingleton().lastName,
     UserProfileSingleton().email,
-    UserProfileSingleton().password,
+    // UserProfileSingleton().password,
     UserProfileSingleton().description,
     UserProfileSingleton().location,
     UserProfileSingleton().hobbies,
@@ -28,14 +28,14 @@ class UserRepository {
       email: email,
       password: password,
     );
-    userProfile.password = password;
+    // userProfile.password = password;
     userProfile.email = email;
     User user = userCredential.user!;
     await FirebaseFirestore.instance
       .collection('userProfile')
       .doc(user.uid)
       .update({
-        "password": password,
+        // "password": password,
         "email": email,
       });
   }
@@ -57,7 +57,7 @@ class UserRepository {
     user.updateDisplayName(firstName);
 
     userProfile.email = email;
-    userProfile.password = password;
+    // userProfile.password = password;
     userProfile.fullName = '$firstName $lastName';
     userProfile.firstName = firstName;
     userProfile.lastName = lastName;
@@ -84,5 +84,17 @@ class UserRepository {
 
   User getUser() {
     return _firebaseAuth.currentUser!;
+  }
+
+  // Create a function that gets all users from Firebase
+  Future<List<UserProfile>> getAllUsers() async {
+    List<UserProfile> userProfile = <UserProfile>[];
+    var docs = FirebaseFirestore.instance.collection('userProfile').get();
+    await docs.then((doc) {
+      for (var doc in doc.docs) {
+        userProfile.add(UserProfile.fromJson(doc.data()));
+      }
+    });
+    return userProfile;
   }
 }

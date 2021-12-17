@@ -8,8 +8,7 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
   final UserRepository _userRepository;
 
   AuthenticationBloc({required UserRepository userRepository})
-      : assert(userRepository != null),
-        _userRepository = userRepository,
+      : _userRepository = userRepository,
         super(AuthenticationInitial());
         
   @override
@@ -33,10 +32,13 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
       DocumentReference document = FirebaseFirestore.instance.collection("userProfile").doc(user.uid);
       document.get().then((DocumentSnapshot snapshot) async {
         data = snapshot.data;
-        UserProfileSingleton().fullName = data['fullname'];
+        UserProfileSingleton().fullName = "${data['firstName']} ${data['lastName']}";
         UserProfileSingleton().firstName = data['firstname'];
         UserProfileSingleton().lastName = data['lastname'];
-        UserProfileSingleton().password = data['password'];
+        // UserProfileSingleton().password = data['password'];
+        UserProfileSingleton().description = data['description'];
+        UserProfileSingleton().location = data['location'];
+        UserProfileSingleton().hobbies = data['hobbies'];
       });
 
       FirebaseFirestore.instance.collection('userProfile').doc(user.uid).get();
@@ -53,10 +55,13 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
     DocumentReference document = FirebaseFirestore.instance.collection("userProfile").doc(user.uid);
     document.get().then((DocumentSnapshot snapshot) async {
       data = snapshot.data;
-      UserProfileSingleton().fullName = data['fullname'];
+      UserProfileSingleton().fullName = "${data['firstName']} ${data['lastName']}";
       UserProfileSingleton().firstName = data['firstname'];
       UserProfileSingleton().lastName = data['lastname'];
-      UserProfileSingleton().password = data['password'];
+      // UserProfileSingleton().password = data['password'];
+      UserProfileSingleton().description = data['description'];
+      UserProfileSingleton().location = data['location'];
+      UserProfileSingleton().hobbies = data['hobbies'];
     });
     UserProfileSingleton().email = user.email;
     yield AuthenticationSuccess(user);
