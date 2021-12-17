@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:squabble/blocs/authentication/bloc.dart';
 import 'package:squabble/repositories/repositories.dart';
 import 'package:squabble/screens/authentication/login/bloc/login_bloc_exports.dart';
+import 'package:squabble/screens/authentication/login/login_screen.dart';
 import 'package:squabble/screens/authentication/register/bloc/register_bloc_exports.dart';
 
 class RegisterForm extends StatefulWidget {
@@ -136,282 +137,501 @@ class _RegisterFormState extends State<RegisterForm> {
             resizeToAvoidBottomInset: false,
             backgroundColor: Colors.black,
             body: SingleChildScrollView(
-              child: Form(
-                key: _formKey,
-                child: Column(
+              child: Container(
+                height: MediaQuery.of(context).size.height,
+                width: MediaQuery.of(context).size.width,
+                child: Stack(
                   children: [
-                    Stepper(
-                      currentStep: _currentStep,
-                      controlsBuilder: (BuildContext context, ControlsDetails details) {
-                        return details.stepIndex < 4 ? Row(
-                          children: <Widget>[
-                            TextButton(
-                              onPressed: details.onStepContinue,
-                              child: const Text('Next'),
-                            ),
-                            TextButton(
-                              onPressed: details.onStepCancel,
-                              child: const Text('Previous'),
-                            ),
-                          ],
-                        ) : Row(
-                          children: <Widget>[
-                            TextButton(
-                              onPressed: () {
-                                if (_formKey.currentState!.validate()) {
-                                  _onFormSubmitted();
-                                }
-                                if (!_formKey.currentState!.validate()) {
-                                  ScaffoldMessenger.of(context)
-                                    ..hideCurrentSnackBar()
-                                    ..showSnackBar(
-                                      SnackBar(
-                                        content: Text('Please go back and fill out all fields'),
-                                        duration: Duration(seconds: 3),
-                                        backgroundColor: Colors.red,
-                                      ),
-                                    );
-                                }
-                                return null;
-                              },
-                              child: const Text('Sign Up'),
-                            ),
-                            TextButton(
-                              onPressed: details.onStepCancel,
-                              child: const Text('Previous'),
-                            ),
-                          ],
-                        );
-                      },
-                      onStepContinue: () {
-                        if (_currentStep >= 4) return;
-                        setState(() {
-                          _currentStep += 1;
-                        });
-                      },
-                      onStepCancel: () {
-                        if (_currentStep <= 0) return;
-                        setState(() {
-                          _currentStep -= 1;
-                        });
-                      },
-                      steps: <Step>[
-                        Step(
-                          title: Text('Full Name', style: TextStyle(color: Colors.white),),
-                          content: Column(
-                            children: [
-                              Padding(
-                                padding: EdgeInsets.fromLTRB(15, 10, 15, 15),
-                                child: TextFormField(
-                                  controller: _firstNameController,
-                                  autocorrect: false,
-                                  textCapitalization: TextCapitalization.words,
-                                  style: TextStyle(color: Colors.white),
-                                  decoration: InputDecoration(
-                                    isDense: true,
-                                    labelText: 'First name',
-                                    labelStyle: TextStyle(
-                                      color: Colors.white,
-                                      // fontSize: 20,
-                                    ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(15.0),
-                                      borderSide: BorderSide(
-                                        color: Colors.white
-                                      ),
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(15.0),
-                                      borderSide: BorderSide(
+                    Align(
+                      alignment: Alignment.topCenter,
+                      child: Image(
+                        image: AssetImage(
+                          'assets/icon/adaptive_icons/foreground.png'
+                        ),
+                        height: 170,
+                        width: 170,
+                      ),
+                    ),
+                    Form(
+                      key: _formKey,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Stepper(
+                            currentStep: _currentStep,
+                            controlsBuilder: (BuildContext context, ControlsDetails details) {
+                              return details.stepIndex < 4 ? Row(
+                                children: <Widget>[
+                                  TextButton(
+                                    onPressed: details.onStepContinue,
+                                    child: const Text('Next'),
+                                  ),
+                                  TextButton(
+                                    onPressed: details.onStepCancel,
+                                    child: const Text('Previous'),
+                                  ),
+                                ],
+                              ) : Row(
+                                children: <Widget>[
+                                  TextButton(
+                                    onPressed: () {
+                                      if (_formKey.currentState!.validate()) {
+                                        _onFormSubmitted();
+                                      }
+                                      if (!_formKey.currentState!.validate()) {
+                                        ScaffoldMessenger.of(context)
+                                          ..hideCurrentSnackBar()
+                                          ..showSnackBar(
+                                            SnackBar(
+                                              content: Text('Please go back and fill out all fields'),
+                                              duration: Duration(seconds: 3),
+                                              backgroundColor: Colors.red,
+                                            ),
+                                          );
+                                      }
+                                      return null;
+                                    },
+                                    child: const Text('Sign Up'),
+                                  ),
+                                  TextButton(
+                                    onPressed: details.onStepCancel,
+                                    child: const Text('Previous'),
+                                  ),
+                                ],
+                              );
+                            },
+                            onStepContinue: () {
+                              if (_currentStep >= 4) return;
+                              setState(() {
+                                _currentStep += 1;
+                              });
+                            },
+                            onStepCancel: () {
+                              if (_currentStep <= 0) return;
+                              setState(() {
+                                _currentStep -= 1;
+                              });
+                            },
+                            steps: <Step>[
+                              Step(
+                                title: Text('Email', style: TextStyle(color: Colors.white),),
+                                content: Padding(
+                                  padding: EdgeInsets.fromLTRB(15, 0, 15, 10),
+                                  child: TextFormField(
+                                    controller: _emailController,
+                                    keyboardType: TextInputType.emailAddress,
+                                    autocorrect: false,
+                                    style: TextStyle(color: Colors.white),
+                                    decoration: InputDecoration(
+                                      isDense: true,
+                                      labelText: 'Email',
+                                      labelStyle: TextStyle(
                                         color: Colors.white,
+                                        // fontSize: 20,
+                                      ),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(15.0),
+                                        borderSide: BorderSide(
+                                          color: Colors.white
+                                        ),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(15.0),
+                                        borderSide: BorderSide(
+                                          color: Colors.teal.shade100,
+                                        ),
+                                      ),
+                                      focusedErrorBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(15.0),
+                                        borderSide: BorderSide(
+                                          color: Colors.red,
+                                        ),
+                                      ),
+                                      errorBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(15.0),
+                                        borderSide: BorderSide(
+                                          color: Colors.red.shade900,
+                                        ),
+                                      )
+                                    ),
+                                    autofocus: false,
+                                    validator: (value) {
+                                      if (value!.isEmpty) {
+                                        return 'Please enter your email address';
+                                      }
+                                      return !state.isEmailValid ? 'Invalid Email' : null;
+                                    },
+                                  ),
+                                ),
+                              ),
+                              Step(
+                                title: Text('Full Name', style: TextStyle(color: Colors.white),),
+                                content: Column(
+                                  children: [
+                                    Padding(
+                                      padding: EdgeInsets.fromLTRB(15, 10, 15, 15),
+                                      child: TextFormField(
+                                        controller: _firstNameController,
+                                        autocorrect: false,
+                                        textCapitalization: TextCapitalization.words,
+                                        style: TextStyle(color: Colors.white),
+                                        decoration: InputDecoration(
+                                          isDense: true,
+                                          labelText: 'First name',
+                                          labelStyle: TextStyle(
+                                            color: Colors.white,
+                                            // fontSize: 20,
+                                          ),
+                                          enabledBorder: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(15.0),
+                                            borderSide: BorderSide(
+                                              color: Colors.white
+                                            ),
+                                          ),
+                                          focusedBorder: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(15.0),
+                                            borderSide: BorderSide(
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                          focusedErrorBorder: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(15.0),
+                                            borderSide: BorderSide(
+                                              color: Colors.red,
+                                            ),
+                                          ),
+                                          errorBorder: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(15.0),
+                                            borderSide: BorderSide(
+                                              color: Colors.red.shade900,
+                                            ),
+                                          )
+                                        ),
+                                        autofocus: false,
+                                        validator: (value) {
+                                          if (value!.isEmpty) {
+                                            return 'Please enter your first name';
+                                          }
+                                        },
                                       ),
                                     ),
-                                    focusedErrorBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(15.0),
-                                      borderSide: BorderSide(
-                                        color: Colors.red,
-                                      ),
-                                    ),
-                                    errorBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(15.0),
-                                      borderSide: BorderSide(
-                                        color: Colors.red.shade900,
+                                    Padding(
+                                      padding: EdgeInsets.fromLTRB(15, 10, 15, 5),
+                                      child: TextFormField(
+                                        controller: _lastNameController,
+                                        autocorrect: false,
+                                        textCapitalization: TextCapitalization.words,
+                                        style: TextStyle(color: Colors.white),
+                                        decoration: InputDecoration(
+                                          isDense: true,
+                                          labelText: 'Last name',
+                                          labelStyle: TextStyle(
+                                            color: Colors.white,
+                                            // fontSize: 20,
+                                          ),
+                                          enabledBorder: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(15.0),
+                                            borderSide: BorderSide(
+                                              color: Colors.white
+                                            ),
+                                          ),
+                                          focusedBorder: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(15.0),
+                                            borderSide: BorderSide(
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                          focusedErrorBorder: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(15.0),
+                                            borderSide: BorderSide(
+                                              color: Colors.red,
+                                            ),
+                                          ),
+                                          errorBorder: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(15.0),
+                                            borderSide: BorderSide(
+                                              color: Colors.red.shade900,
+                                            ),
+                                          )
+                                        ),
+                                        autofocus: false,
+                                        validator: (value) {
+                                          if (value!.isEmpty) {
+                                            return 'Please enter your last name';
+                                          }
+                                        },
                                       ),
                                     )
-                                  ),
-                                  autofocus: false,
-                                  validator: (value) {
-                                    if (value!.isEmpty) {
-                                      return 'Please enter your first name';
-                                    }
-                                  },
+                                  ]
                                 ),
                               ),
-                              Padding(
-                                padding: EdgeInsets.fromLTRB(15, 10, 15, 5),
-                                child: TextFormField(
-                                  controller: _lastNameController,
-                                  autocorrect: false,
-                                  textCapitalization: TextCapitalization.words,
-                                  style: TextStyle(color: Colors.white),
-                                  decoration: InputDecoration(
-                                    isDense: true,
-                                    labelText: 'Last name',
-                                    labelStyle: TextStyle(
-                                      color: Colors.white,
-                                      // fontSize: 20,
-                                    ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(15.0),
-                                      borderSide: BorderSide(
-                                        color: Colors.white
+                              Step(
+                                title: Text('Description', style: TextStyle(color: Colors.white),),
+                                subtitle: Text('Tell us about yourself', style: TextStyle(color: Colors.white),),
+                                content: Padding(
+                                  padding: EdgeInsets.fromLTRB(15, 10, 15, 10),
+                                  child: TextFormField(
+                                    controller: _descriptionController,
+                                    autocorrect: true,
+                                    textCapitalization: TextCapitalization.sentences,
+                                    style: TextStyle(color: Colors.white),
+                                    maxLines: 5,
+                                    decoration: InputDecoration(
+                                      hintText: "I'm a fun loving person who loves to travel and explore new places...",
+                                      hintStyle: TextStyle(
+                                        color: Colors.grey[700]
                                       ),
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(15.0),
-                                      borderSide: BorderSide(
-                                        color: Colors.white,
+                                      enabledBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(15.0),
+                                        borderSide: BorderSide(
+                                          color: Colors.white
+                                        ),
                                       ),
-                                    ),
-                                    focusedErrorBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(15.0),
-                                      borderSide: BorderSide(
-                                        color: Colors.red,
+                                      focusedBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(15.0),
+                                        borderSide: BorderSide(
+                                          color: Colors.white,
+                                        ),
                                       ),
-                                    ),
-                                    errorBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(15.0),
-                                      borderSide: BorderSide(
-                                        color: Colors.red.shade900,
+                                      focusedErrorBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(15.0),
+                                        borderSide: BorderSide(
+                                          color: Colors.red,
+                                        ),
                                       ),
+                                      errorBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(15.0),
+                                        borderSide: BorderSide(
+                                          color: Colors.red.shade900,
+                                        ),
+                                      )
+                                    ),
+                                    autofocus: false,
+                                    validator: (value) {
+                                      if (value!.isEmpty) {
+                                        return 'Please enter a brief description of yourself';
+                                      }
+                                    },
+                                  ),
+                                ),
+                              ),
+                              Step(
+                                title: Text('Hobbies', style: TextStyle(color: Colors.white),),
+                                subtitle: Text('What do you like to do for fun?', style: TextStyle(color: Colors.white),),
+                                content: Padding(
+                                  padding: EdgeInsets.fromLTRB(15, 10, 15, 10),
+                                  child: TextFormField(
+                                    controller: _hobbiesController,
+                                    autocorrect: true,
+                                    textCapitalization: TextCapitalization.sentences,
+                                    style: TextStyle(color: Colors.white),
+                                    maxLines: 5,
+                                    decoration: InputDecoration(
+                                      hintText: "1. Reading, 2. Watching movies, 3. Playing video games...",
+                                      hintStyle: TextStyle(
+                                        color: Colors.grey[700]
+                                      ),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(15.0),
+                                        borderSide: BorderSide(
+                                          color: Colors.white
+                                        ),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(15.0),
+                                        borderSide: BorderSide(
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                      focusedErrorBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(15.0),
+                                        borderSide: BorderSide(
+                                          color: Colors.red,
+                                        ),
+                                      ),
+                                      errorBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(15.0),
+                                        borderSide: BorderSide(
+                                          color: Colors.red.shade900,
+                                        ),
+                                      )
+                                    ),
+                                    autofocus: false,
+                                    validator: (value) {
+                                      if (value!.isEmpty) {
+                                        return 'Mention a few hobbies';
+                                      }
+                                    },
+                                  ),
+                                ),
+                              ),
+                              Step(
+                                title: Text('Password', style: TextStyle(color: Colors.white),),
+                                content: Column(
+                                  children: [
+                                    Padding(
+                                      padding: EdgeInsets.fromLTRB(15, 10, 15, 5),
+                                      child: TextFormField(
+                                        controller: _passwordController,
+                                        obscureText: isPasswordObscure,
+                                        style: TextStyle(color: Colors.white),
+                                        autocorrect: false,
+                                        autofocus: false,
+                                        decoration: InputDecoration(
+                                          labelText: 'Password',
+                                          labelStyle: TextStyle(
+                                            color: Colors.white,
+                                            // fontSize: 20,
+                                          ),
+                                          enabledBorder: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(15.0),
+                                            borderSide: BorderSide(
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                          focusedBorder: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(15.0),
+                                            borderSide: BorderSide(
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                          focusedErrorBorder: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(15.0),
+                                            borderSide: BorderSide(
+                                              color: Colors.red,
+                                            ),
+                                          ),
+                                          errorBorder: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(15.0),
+                                            borderSide: BorderSide(
+                                              color: Colors.red.shade900,
+                                            ),
+                                          ),
+                                          suffixIcon: IconButton(
+                                            icon: Icon(
+                                              isPasswordObscure ? Icons.visibility : Icons.visibility_off,
+                                              color: Colors.white,
+                                            ),
+                                            onPressed: () {
+                                              setState(() {
+                                                isPasswordObscure = !isPasswordObscure;
+                                              });
+                                            },
+                                          ),
+                                        ),
+                                        validator: (value) {
+                                          if (value!.isEmpty) {
+                                            return 'Please enter a strong password!';
+                                          }
+                                          else if (value.length < 6) {
+                                            return 'Password must be at least 6 characters long';
+                                          }
+                                          return null;
+                                        }
+                                      )
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.fromLTRB(15, 10, 15, 5),
+                                      child: TextFormField(
+                                        controller: _confirmPasswordController,
+                                        obscureText: isConfirmPasswordObscure,
+                                        style: TextStyle(color: Colors.white),
+                                        autocorrect: false,
+                                        autofocus: false,
+                                        decoration: InputDecoration(
+                                          labelText: 'Confirm password',
+                                          labelStyle: TextStyle(
+                                            color: Colors.white,
+                                          ),
+                                          enabledBorder: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(15.0),
+                                            borderSide: BorderSide(
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                          focusedBorder: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(15.0),
+                                            borderSide: BorderSide(
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                          focusedErrorBorder: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(15.0),
+                                            borderSide: BorderSide(
+                                              color: Colors.red,
+                                            ),
+                                          ),
+                                          errorBorder: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(15.0),
+                                            borderSide: BorderSide(
+                                              color: Colors.red.shade900,
+                                            ),
+                                          ),
+                                          suffixIcon: IconButton(
+                                            icon: Icon(
+                                              isConfirmPasswordObscure ? Icons.visibility : Icons.visibility_off,
+                                              color: Colors.white,
+                                            ),
+                                            onPressed: () {
+                                              setState(() {
+                                                isConfirmPasswordObscure = !isConfirmPasswordObscure;
+                                              });
+                                            },
+                                          ),
+                                        ),
+                                        validator: (value) {
+                                          if (value!.isEmpty) {
+                                            return 'Please confirm your password';
+                                          }
+                                          if (value != _passwordController.text) {
+                                            return 'Passwords do not match';
+                                          }
+                                          return null;
+                                        }
+                                      )
                                     )
-                                  ),
-                                  autofocus: false,
-                                  validator: (value) {
-                                    if (value!.isEmpty) {
-                                      return 'Please enter your last name';
-                                    }
-                                  },
+                                  ],
                                 ),
-                              )
-                            ]
-                          ),
-                        ),
-                        Step(
-                          title: Text('Description', style: TextStyle(color: Colors.white),),
-                          subtitle: Text('Tell us about yourself', style: TextStyle(color: Colors.white),),
-                          content: Padding(
-                            padding: EdgeInsets.fromLTRB(15, 10, 15, 10),
-                            child: TextFormField(
-                              controller: _descriptionController,
-                              autocorrect: true,
-                              textCapitalization: TextCapitalization.sentences,
-                              style: TextStyle(color: Colors.white),
-                              maxLines: 5,
-                              decoration: InputDecoration(
-                                hintText: "I'm a fun loving person who loves to travel and explore new places...",
-                                hintStyle: TextStyle(
-                                  color: Colors.grey[700]
-                                ),
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(15.0),
-                                  borderSide: BorderSide(
-                                    color: Colors.white
-                                  ),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(15.0),
-                                  borderSide: BorderSide(
-                                    color: Colors.white,
-                                  ),
-                                ),
-                                focusedErrorBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(15.0),
-                                  borderSide: BorderSide(
-                                    color: Colors.red,
-                                  ),
-                                ),
-                                errorBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(15.0),
-                                  borderSide: BorderSide(
-                                    color: Colors.red.shade900,
-                                  ),
-                                )
                               ),
-                              autofocus: false,
-                              validator: (value) {
-                                if (value!.isEmpty) {
-                                  return 'Please enter a brief description of yourself';
-                                }
-                              },
-                            ),
-                          ),
-                        ),
-                        Step(
-                          title: Text('Hobbies', style: TextStyle(color: Colors.white),),
-                          subtitle: Text('What do you like to do in your spare time?', style: TextStyle(color: Colors.white),),
-                          content: Padding(
-                            padding: EdgeInsets.fromLTRB(15, 10, 15, 10),
-                            child: TextFormField(
-                              controller: _hobbiesController,
-                              autocorrect: true,
-                              textCapitalization: TextCapitalization.sentences,
-                              style: TextStyle(color: Colors.white),
-                              maxLines: 5,
-                              decoration: InputDecoration(
-                                hintText: "1. Reading, 2. Watching movies, 3. Playing video games...",
-                                hintStyle: TextStyle(
-                                  color: Colors.grey[700]
+                            ],
+                          )
+                        ],
+                      ),
+                    ),
+                    Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Padding(
+                        padding: const EdgeInsets.only(bottom: 5),
+                        child: Container(
+                          alignment: Alignment.bottomCenter,
+                          child: GestureDetector(
+                            child: RichText(
+                              text: TextSpan(
+                                text: 'Already have an account?',
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontFamily: "Poppins",
+                                  fontSize: 15
                                 ),
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(15.0),
-                                  borderSide: BorderSide(
-                                    color: Colors.white
-                                  ),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(15.0),
-                                  borderSide: BorderSide(
-                                    color: Colors.white,
-                                  ),
-                                ),
-                                focusedErrorBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(15.0),
-                                  borderSide: BorderSide(
-                                    color: Colors.red,
-                                  ),
-                                ),
-                                errorBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(15.0),
-                                  borderSide: BorderSide(
-                                    color: Colors.red.shade900,
-                                  ),
-                                )
+                                children: <TextSpan>[
+                                  TextSpan(
+                                    text: ' Log in',
+                                    style: TextStyle(
+                                      fontFamily: "Poppins",
+                                      fontWeight: FontWeight.w700
+                                    )
+                                  )
+                                ]
                               ),
-                              autofocus: false,
-                              validator: (value) {
-                                if (value!.isEmpty) {
-                                  return 'Please enter a brief description of yourself';
-                                }
-                              },
                             ),
-                          ),
-                        ),
-                        Step(
-                          title: Text('Password', style: TextStyle(color: Colors.white),),
-                          content: SizedBox(
-                            width: 100.0,
-                            height: 100.0,
-                          ),
-                        ),
-                        Step(
-                          title: Text('Full Name', style: TextStyle(color: Colors.white),),
-                          content: SizedBox(
-                            width: 100.0,
-                            height: 100.0,
-                          ),
-                        ),
-                      ],
+                            onTap: () {
+                              Navigator.push(context, MaterialPageRoute(
+                                builder: (context) => LoginScreen(userRepository: userRepository)
+                              ));
+                            },
+                          )
+                        )
+                      )
                     )
                   ],
                 ),
