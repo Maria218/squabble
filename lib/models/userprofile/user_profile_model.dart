@@ -6,6 +6,7 @@ class UserProfile {
   String? password;
   String? description;
   String? location;
+  String? hobbies;
 
   UserProfile(
     this.fullName,
@@ -14,7 +15,8 @@ class UserProfile {
     this.email,
     this.password,
     this.description,
-    this.location
+    this.location,
+    this.hobbies
   );
 
   factory UserProfile.fromJson(Map<String, dynamic> json) => UserProfile(
@@ -25,6 +27,7 @@ class UserProfile {
     json["password"] == null ? null : json["password"],
     json["description"] == null ? null : json["description"],
     json["location"] == null ? null : json["location"],
+    json["hobbies"] == null ? null : json["hobbies"],
   );
 
   UserProfile.fromMap(Map<String, dynamic> map) : email = map['email'];
@@ -37,5 +40,6 @@ class UserProfile {
     'email': email,
     'password': password,
     'description': description,
+    'hobbies': hobbies,
   };
 }

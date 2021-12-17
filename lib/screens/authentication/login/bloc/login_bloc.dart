@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:squabble/repositories/repositories.dart';
-import 'package:squabble/screens/authentication/login/bloc/bloc_exports.dart';
+import 'package:squabble/screens/authentication/login/bloc/login_bloc_exports.dart';
 import 'package:rxdart/rxdart.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {

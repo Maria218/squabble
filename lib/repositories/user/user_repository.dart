@@ -16,6 +16,7 @@ class UserRepository {
     UserProfileSingleton().password,
     UserProfileSingleton().description,
     UserProfileSingleton().location,
+    UserProfileSingleton().hobbies,
   );
 
   UserRepository({
@@ -44,7 +45,9 @@ class UserRepository {
     required String password,
     required String firstName,
     required String lastName,
-    required String description
+    required String description,
+    required String location,
+    required String hobbies,
   }) async {
     UserCredential userCredential = await _firebaseAuth.createUserWithEmailAndPassword(
       email: email,
@@ -59,6 +62,8 @@ class UserRepository {
     userProfile.firstName = firstName;
     userProfile.lastName = lastName;
     userProfile.description = description;
+    userProfile.location = location;
+    userProfile.hobbies = hobbies;
     await FirebaseFirestore.instance
       .collection('userProfile')
       .doc(user.uid)

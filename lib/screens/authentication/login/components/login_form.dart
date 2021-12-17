@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:squabble/blocs/authentication/bloc.dart';
 import 'package:squabble/repositories/repositories.dart';
-import 'package:squabble/screens/authentication/login/bloc/bloc_exports.dart';
+import 'package:squabble/screens/authentication/login/bloc/login_bloc_exports.dart';
+import 'package:squabble/screens/authentication/register/register_screen.dart';
 
 class LoginForm extends StatefulWidget {
   final UserRepository _userRepository;
@@ -257,6 +258,41 @@ class _LoginFormState extends State<LoginForm> {
                         ]
                       ),
                     ),
+                    Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Padding(
+                        padding: const EdgeInsets.only(bottom: 5),
+                        child: Container(
+                          alignment: Alignment.bottomCenter,
+                          child: GestureDetector(
+                            child: RichText(
+                              text: TextSpan(
+                                text: 'Are you a new user?',
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontFamily: "Poppins",
+                                  fontSize: 15
+                                ),
+                                children: <TextSpan>[
+                                  TextSpan(
+                                    text: ' Sign up',
+                                    style: TextStyle(
+                                      fontFamily: "Poppins",
+                                      fontWeight: FontWeight.w700
+                                    )
+                                  )
+                                ]
+                              ),
+                            ),
+                            onTap: () {
+                              Navigator.push(context, MaterialPageRoute(
+                                builder: (context) => RegisterScreen(userRepository: userRepository)
+                              ));
+                            },
+                          )
+                        )
+                      )
+                    )
                   ]
                 )
               ),

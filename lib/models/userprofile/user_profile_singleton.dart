@@ -6,6 +6,7 @@ class UserProfileSingleton {
   String? password;
   String? description;
   String? location;
+  String? hobbies;
   
   // -------  SINGLETON ------
   static final UserProfileSingleton _instance = UserProfileSingleton._internal();
